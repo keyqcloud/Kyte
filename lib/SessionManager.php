@@ -57,7 +57,6 @@ class SessionManager
 			// create new session
 			$res = $this->session->create([
 				'uid' => $this->user->getParam('id'),
-				'create_date' => $time,
 				'exp_date' => $exp_time,
 				'sessionToken' => $this->generateSessionToken($this->user->getParam($this->username_field)),
 				'txToken' => $this->generateTxToken($time, $exp_time, $this->user->getParam($this->username_field)),
@@ -72,32 +71,35 @@ class SessionManager
 		
 	}
 
-	public function validate($txToken, $sessionToken, $sameToken = false)
+	public function validate($sessionToken)
 	{
-		if (!$this->session->retrieve('txToken', $txToken, [[ 'field' => 'sessionToken', 'value' => $sessionToken ]])) {
+		// get current time
+		$time = time();
+
+		// check if session token exists and retrieve session object
+		if (!$this->session->retrieve('sessionToken', $sessionToken)) {
 			throw new \Kyte\SessionException("No valid session.");
 		}
 		
+		// check if use is still active
 		if (!$this->user->retrieve('id', $this->session->getParam('uid'))) {
 			throw new \Kyte\SessionException("Invalid session.");
 		}
-		if (time() > $this->session->getParam('exp_date')) {
+
+		// check for expriation
+		if ($time > $this->session->getParam('exp_date')) {
 			throw new \Kyte\SessionException("Session expired.");
 		}
-		$time = time();
-		$exp_time = $time+$this->timeout;
-		if (!$sameToken) {
-			$txToken = $this->generateTxToken($time, $exp_time, $this->user->getParam($this->username_field));
-		}
 		
-		$this->session->delete();
-		$this->session->create([
-			'uid' => $this->user->getParam('id'),
-			'create_date' => $time,
+		// create new expiration
+		$exp_time = $time+$this->timeout;
+		
+		// update session with new expiration
+		$this->session->save([
 			'exp_date' => $exp_time,
-			'sessionToken' => $sessionToken,
-			'txToken' => $txToken,
 		]);
+
+		// return session variable
 		return $this->session->getAllParams();
 	}
 
