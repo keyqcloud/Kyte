@@ -52,7 +52,9 @@ class ModelObject
 		foreach ($params as $key => $value) {
 			if (array_key_exists($key, $this->model['struct'])) {
 				$this->setParam($key, $value);
-				$types .= $this->model['struct'][$key]['type'];
+				// check if type is t, in which case return 's'
+				// otherwise return type as is
+				$types .= $this->model['struct'][$key]['type'] == 't' ? 's' : $this->model['struct'][$key]['type'];
 			} else {
 				unset($params[$key]);
 			}
