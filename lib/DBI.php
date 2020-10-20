@@ -9,6 +9,7 @@ class DBI {
 	public static $dbPassword;
 	public static $dbName;
 	public static $dbHost;
+	public static $charset;
 
 	/*
 	 * Sets the database username to be used to connect to DB
@@ -51,6 +52,16 @@ class DBI {
 	}
 
 	/*
+	 * Sets the database charset
+	 *
+	 * @param string $charset
+	 */
+	public static function setCharset($charset)
+	{
+		self::$charset = $charset;
+	}
+
+	/*
 	 * Connect to database
 	 *
 	 * @param string $dbName
@@ -61,7 +72,7 @@ class DBI {
 			try {
 				self::$dbConn = new \mysqli(self::$dbHost, self::$dbUser, self::$dbPassword, self::$dbName);
 				// set charset to utf8mb4
-				if ( TRUE !== self::$dbConn->set_charset( 'utf8mb4' ) )
+				if ( TRUE !== self::$dbConn->set_charset( self::$charset ) )
 					throw new \Exception( self::$dbConn->error, self::$dbConn->errno );
 			} catch (mysqli_sql_exception $e) {
 				throw $e;
