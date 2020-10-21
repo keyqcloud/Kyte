@@ -75,7 +75,7 @@ class ModelObject
 			return false;
 		} else {
 			foreach ($this->model['struct'] as $key => $value) {
-				if ($value['required'] && !isset($params[$key])) {
+				if ($value['required'] && !isset($value['pk']) && !isset($params[$key])) {
 					throw new \Exception("Column $key cannot be null.");
 					return false;
 				}
