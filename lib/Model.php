@@ -101,7 +101,7 @@ class Model
 			
 			return $data;
 
-		} catch (\Throwable $th) {
+		} catch (\Exception $e) {
 			throw $e;
 			return false;
 		}
