@@ -90,7 +90,7 @@ class Model
 		}
 	}
 
-	static public function groupBy($field = null, $all = false)
+	public function groupBy($field = null, $all = false)
 	{
 		try {
 			$sql = '';
