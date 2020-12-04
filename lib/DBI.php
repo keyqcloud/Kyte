@@ -275,7 +275,7 @@ class DBI {
 			$query .= " $condition";
 		}
 
-		$query .= ' GROUP BY `$field`';
+		$query .= " GROUP BY `$field`";
 
 		$result = self::$dbConn->query($query);
 		if($result === false) {
