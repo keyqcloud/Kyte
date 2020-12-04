@@ -258,6 +258,42 @@ class DBI {
 	}
 
 	/*
+	 * Select from table in database and group by
+	 *
+	 * @param string $table
+	 * @param string $condition
+	 */
+	public static function group($table, $field, $condition = null)
+	{
+		if (!self::$dbConn) {
+			self::connect();
+		}
+
+		$query = "SELECT `$field`, count(`$field`) FROM `$table`";
+
+		if($query) {
+			$query .= " $condition";
+		}
+
+		$query .= ' GROUP BY `$field`';
+
+		$result = self::$dbConn->query($query);
+		if($result === false) {
+  			throw new \Exception("Error with mysql query '$query'.");
+  			return false;
+		}
+
+		$data = array();
+		while ($row = $result->fetch_assoc()) {
+			$data[] = $row;
+		}
+
+		$result->free();
+		
+		return $data;
+	}
+
+	/*
 	 * Select from table in database and returns the first row only
 	 *
 	 * @param string $table

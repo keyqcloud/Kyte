@@ -90,6 +90,23 @@ class Model
 		}
 	}
 
+	static public function groupBy($field = null, $all = false)
+	{
+		try {
+			$sql = '';
+			if (!$all) {
+				$sql .= " WHERE `deleted` = '0'";
+			}
+			$data = DBI::group($this->model['name'], $field, $sql);
+			
+			return $data;
+
+		} catch (\Throwable $th) {
+			throw $e;
+			return false;
+		}
+	}
+
 	public function search($fields = null, $values = null, $all = false)
 	{
 		try {
