@@ -90,13 +90,34 @@ class Model
 		}
 	}
 
-	public function groupBy($field = null, $all = false)
+	public function groupBy($field = null, $condition = null, $all = false)
 	{
 		try {
 			$sql = '';
 			if (!$all) {
 				$sql .= " WHERE `deleted` = '0'";
 			}
+
+			if(isset($conditions)) {
+				// iterate through each condition
+				foreach($conditions as $condition) {
+					// check if an evaluation operator is set
+					if (isset($condition['operator'])) {
+						if ($sql != '') {
+							$sql .= " AND ";
+						}
+						$sql .= "`{$condition['field']}` {$condition['operator']} '{$condition['value']}'";
+					}
+					// default to equal
+					else {
+						if ($sql != '') {
+							$sql .= " AND ";
+						}
+						$sql .= "`{$condition['field']}` = '{$condition['value']}'";
+					}
+				}
+			}
+			
 			$data = DBI::group($this->model['name'], $field, $sql);
 			
 			return $data;
