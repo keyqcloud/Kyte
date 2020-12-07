@@ -90,7 +90,7 @@ class Model
 		}
 	}
 
-	public function groupBy($field = null, $condition = null, $all = false)
+	public function groupBy($field = null, $conditions = null, $all = false)
 	{
 		try {
 			$sql = '';
@@ -117,7 +117,7 @@ class Model
 					}
 				}
 			}
-			
+
 			$data = DBI::group($this->model['name'], $field, $sql);
 			
 			return $data;
