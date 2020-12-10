@@ -5,10 +5,7 @@
         "php": ">=7.2",
         "ext-curl": "*",
         "ext-json": "*",
-        "ext-mbstring": "*",
-        "aws/aws-sdk-php": "^3.101",
-        "sendgrid/sendgrid": "^7.3",
-        "stripe/stripe-php": "^7.2"
+        "ext-mbstring": "*"
     },
     "authors": [
         {
