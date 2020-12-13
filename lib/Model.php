@@ -70,6 +70,8 @@ class Model
 						$sql .= " ORDER BY `{$order['field']}` {$order['direction']}";
 					}
 				}
+			} else {
+				$sql .= " ORDER BY `date_created` DESC";
 			}
 
 			$data = DBI::select($this->model['name'], null, $sql);
