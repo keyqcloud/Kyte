@@ -294,6 +294,35 @@ class DBI {
 	}
 
 	/*
+	 * Execute custom SQL query (only selects)
+	 *
+	 * @param string $sql
+	 */
+	public static function query($sql)
+	{
+		if (!self::$dbConn) {
+			self::connect();
+		}
+
+		$query = "SELECT ".$sql;
+
+		$result = self::$dbConn->query($query);
+		if($result === false) {
+  			throw new \Exception("Error with mysql query '$query'.");
+  			return false;
+		}
+
+		$data = array();
+		while ($row = $result->fetch_assoc()) {
+			$data[] = $row;
+		}
+
+		$result->free();
+		
+		return $data;
+	}
+
+	/*
 	 * Select from table in database and returns the first row only
 	 *
 	 * @param string $table

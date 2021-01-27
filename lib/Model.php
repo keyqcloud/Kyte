@@ -130,6 +130,19 @@ class Model
 		}
 	}
 
+	public function customSelect($sql)
+	{
+		try {
+			$data = DBI::query($sql);
+			
+			return $data;
+
+		} catch (\Exception $e) {
+			throw $e;
+			return false;
+		}
+	}
+
 	public function search($fields = null, $values = null, $all = false)
 	{
 		try {
