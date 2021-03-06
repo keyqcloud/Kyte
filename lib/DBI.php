@@ -114,6 +114,11 @@ class DBI {
 
 		$query = sprintf("INSERT INTO `%s`(%s) VALUES(%s)", $table, implode(',', $columns), $placeholder);
 
+		// DEBUG
+		if (defined('DEBUG_SQL')) {
+			error_log($query);
+		}
+
 		$stmt = self::$dbConn->prepare($query);
 		if($stmt === false) {
   			throw new \Exception("Error preparing mysql statement '$query'; ".htmlspecialchars(self::$dbConn->error), 1);
@@ -167,6 +172,11 @@ class DBI {
 		// add condition
 		$query .= " WHERE id = ?";
 
+		// DEBUG
+		if (defined('DEBUG_SQL')) {
+			error_log($query);
+		}
+
 		$stmt = self::$dbConn->prepare($query);
 		if($stmt === false) {
   			throw new \Exception("Error preparing mysql statement '$query'; ".htmlspecialchars(self::$dbConn->error), 1);
@@ -200,6 +210,11 @@ class DBI {
 		}
 
 		$query = "DELETE FROM `$table` WHERE id = ?";
+
+		// DEBUG
+		if (defined('DEBUG_SQL')) {
+			error_log($query);
+		}
 
 		$stmt = self::$dbConn->prepare($query);
 		if($stmt === false) {
@@ -241,6 +256,11 @@ class DBI {
 			$query .= " $condition";
 		}
 
+		// DEBUG
+		if (defined('DEBUG_SQL')) {
+			error_log($query);
+		}
+
 		$result = self::$dbConn->query($query);
 		if($result === false) {
   			throw new \Exception("Error with mysql query '$query'.");
@@ -277,6 +297,11 @@ class DBI {
 
 		$query .= " GROUP BY `$field`";
 
+		// DEBUG
+		if (defined('DEBUG_SQL')) {
+			error_log($query);
+		}
+
 		$result = self::$dbConn->query($query);
 		if($result === false) {
   			throw new \Exception("Error with mysql query '$query'.");
@@ -305,6 +330,11 @@ class DBI {
 		}
 
 		$query = "SELECT ".$sql;
+
+		// DEBUG
+		if (defined('DEBUG_SQL')) {
+			error_log($query);
+		}
 
 		$result = self::$dbConn->query($query);
 		if($result === false) {
@@ -345,6 +375,11 @@ class DBI {
 			$query .= " $condition";
 		}
 
+		// DEBUG
+		if (defined('DEBUG_SQL')) {
+			error_log($query);
+		}
+		
 		$result = self::$dbConn->query($query);
 		if($result === false) {
   			throw new \Exception("Error with mysql query '$query'.");
