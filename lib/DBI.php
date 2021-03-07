@@ -100,6 +100,11 @@ class DBI {
 			return false;
 		}
 
+		// DEBUG
+		if (defined('DEBUG_SQL_PARAMS')) {
+			error_log(print_r($params, true));
+		}
+
 		// prepare bind params for call_user_func_array
 		$bindParams = array();
 		$columns = array_keys($params);
@@ -152,6 +157,11 @@ class DBI {
 	{
 		if (!self::$dbConn) {
 			self::connect();
+		}
+
+		// DEBUG
+		if (defined('DEBUG_SQL_PARAMS')) {
+			error_log(print_r($params, true));
 		}
 
 		$query = "UPDATE `$table` SET ";
@@ -379,7 +389,7 @@ class DBI {
 		if (defined('DEBUG_SQL')) {
 			error_log($query);
 		}
-		
+
 		$result = self::$dbConn->query($query);
 		if($result === false) {
   			throw new \Exception("Error with mysql query '$query'.");
